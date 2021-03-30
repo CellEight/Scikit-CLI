@@ -37,7 +37,7 @@ def scikitCheat(data):
                 # Dimensionality Reduction Path
                 model = createDimReduce(df)
             else:
-                print("[*] Looking to predict Structure? Tough Luck :( ")
+                print(colored("[!] Looking to predict Structure? Tough Luck :( ", 'red'))
                 sys.exit(0)
 
 
@@ -108,10 +108,57 @@ def createCluster(df):
                     print(colored("[*] Performing Gaussian Mixture Model...", "yellow")) 
                     #display results
                     return model
+        else:
+            print(colored("[*] Dataset contains ≥10k data points", "yellow"))
+            # fit Mini Batch KMeans
+            print(colored("[*] Performing MiniBatch KMeans Clustering...", "yellow")) 
+            # display results
+            return model
+    else:
+        k = int(ask("[?] How many clusters are present? ", list(range(1,101))))
+        print(colored("[*] Checking size of dataset", "yellow"))
+        if data.train.size < 1e4:
+            print(colored("[*] Dataset contains <10k data points", "yellow"))
+            # fit Mean Shift
+            print(colored("[*] Performing Mean Shift Clustering...", "yellow")) 
+            #display results
+            if ask("[?] Are these results satisfactory?") == "yes":
+                return model
+            else: 
+                # fit VBGMM 
+                print(colored("[*] Performing Variational Bayesian Gaussian Mixture Clustering...", "yellow")) 
+                #display results
+                return model
+        else:
+            print(colored("[*] Dataset contains ≥10k data points", "yellow"))
+            print(colored("[!] Sorry too much data! Tough Luck :( ", 'red'))
+            sys.exit(0)
+
+        
 
 def createRegressor(df):
     """ Implements the logic in the regression sub-graph of the cheat sheet """
-    pass
+    print(colored("[*] Checking size of dataset", "yellow"))
+    if data.train.size < 1e5:
+        print(colored("[*] Dataset contains <100k data points", "yellow"))
+        # fit a linear SGD Regressor
+        print(colored("[*] Fitting SGD Regressor...", "yellow")) 
+        # display results
+        return model
+    else:
+        print(colored("[*] Dataset contains ≥100k data points", "yellow"))
+        if ask("[?] Should the model perform implicit feature selection?") == 'yes':
+            # fit a Lasso 
+            print(colored("[*] Fitting Lasso Regressor...", "yellow")) 
+            # display results
+            if ask("[?] Are these results satisfactory?") == "yes":
+                return model
+            else: 
+                # fit Elastic Net
+                print(colored("[*] Fitting ElasticNet...", "yellow")) 
+                #display results
+                return model
+        else: 
 
 def createDimReduce(df):
     pass
