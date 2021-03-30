@@ -54,35 +54,63 @@ def createClassifer(data,label):
     if data.train.size < 1e5:
         print(colored("[*] Dataset contains <100k data points", "yellow"))
         # fit a linear SVC
+        print(colored("[*] Fitting Fitting Linear SVC...", "yellow"))
         # Display results
         if ask("[?] Are these results satisfactory?") == "yes":
             return model 
         else:
             if ask("[?] Are you working with text data?") == "yes":
                 # fit Naive Bayes
+                print(colored("[*] Fitting Naive Bayes Classifier...", "yellow"))
                 # Display results
                 return model 
             else:
                 # fit KNN
+                print(colored("[*] Fitting KNN Classifier...", "yellow"))
                 # Display results
                 if ask("[?] Are these results satisfactory?") == "yes":
                     return model
                 else:
-                    # fit ensemble
+                    # fit SVC (ensamble) 
+                    print(colored("[*] Fitting Fitting SVC Ensemble...", "yellow"))
                     return model
     else:
         print(colored("[*] Dataset contains ≥100k data points", "yellow"))
+        print(colored("[*] Fitting SGD Classifier...", "yellow"))
         # fit SGD Classifer
         if ask("[?] Are these results satisfactory?") == "yes":
             return model
         else:
             #fit kernel approximation
+            print(colored("[*] Fitting Kernel Approximation...", "yellow"))
             return model
 
 def createCluster(df):
-    pass
+    """ Implements the logic in the clustering sub-graph of the cheat sheet """
+    if ask("[?] Is the number of clusters known?") == "yes":
+        k = int(ask("[?] How many clusters are present? ", list(range(1,101))))
+        print(colored("[*] Checking size of dataset", "yellow"))
+        if data.train.size < 1e4:
+            print(colored("[*] Dataset contains <10k data points", "yellow"))
+            # fit KMeans
+            print(colored("[*] Performing KMeans Clustering...", "yellow")) 
+            #display results
+            if ask("[?] Are these results satisfactory?") == "yes":
+                return model
+            else: 
+                # fit Spectral Clustering
+                print(colored("[*] Performing Spectral Clustering...", "yellow")) 
+                #display results
+                if ask("[?] Are these results satisfactory?") == "yes":
+                    return model
+                else:
+                    # fit GMM 
+                    print(colored("[*] Performing Gaussian Mixture Model...", "yellow")) 
+                    #display results
+                    return model
 
 def createRegressor(df):
+    """ Implements the logic in the regression sub-graph of the cheat sheet """
     pass
 
 def createDimReduce(df):
